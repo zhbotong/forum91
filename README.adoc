@@ -1,31 +1,12 @@
 = Forum91
+一个简单的kotlin+vert.x的图片下载爬虫
 
-image:https://img.shields.io/badge/vert.x-4.0.0-SNAPSHOT-purple.svg[link="https://vertx.io"]
+Run.kt 为程序的入口
 
-This application was generated using http://start.vertx.io
+config.json
 
-== Building
+host = 论坛地址 https://xxxx.xx
 
-To launch your tests:
-```
-./gradlew clean test
-```
-
-To package your application:
-```
-./gradlew clean assemble
-```
-
-To run your application:
-```
-./gradlew clean run
-```
-
-== Help
-
-* https://vertx.io/docs/[Vert.x Documentation]
-* https://stackoverflow.com/questions/tagged/vert.x?sort=newest&pageSize=15[Vert.x Stack Overflow]
-* https://groups.google.com/forum/?fromgroups#!forum/vertx[Vert.x User Group]
-* https://gitter.im/eclipse-vertx/vertx-users[Vert.x Gitter]
+path = 文件下载目录
 
 
