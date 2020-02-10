@@ -33,7 +33,7 @@ dependencies {
   implementation "io.vertx:vertx-lang-kotlin-coroutines:$vertxVersion"
   implementation "io.vertx:vertx-lang-kotlin:$vertxVersion"
   implementation "io.vertx:vertx-mysql-client:$vertxVersion"
-  implementation "org.jsoup:jsoup:1.12.1"
+  implementation "org.jsoup:jsoup:1.12.2"
   testImplementation "io.vertx:vertx-junit5:$vertxVersion"
   testRuntimeOnly "org.junit.jupiter:junit-jupiter-engine:$junitJupiterEngineVersion"
   testImplementation "org.junit.jupiter:junit-jupiter-api:$junitJupiterEngineVersion"
