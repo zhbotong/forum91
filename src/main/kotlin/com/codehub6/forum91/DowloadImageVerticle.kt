@@ -12,6 +12,8 @@ import io.vertx.kotlin.coroutines.CoroutineVerticle
 import io.vertx.kotlin.ext.web.client.sendAwait
 import io.vertx.kotlin.ext.web.client.webClientOptionsOf
 import kotlinx.coroutines.launch
+import java.time.LocalDate
+import java.time.format.DateTimeFormatter
 
 /**
  * 图片下载
@@ -24,20 +26,30 @@ class DowloadImageVerticle : CoroutineVerticle() {
     webClient = WebClient.create(vertx, option)
 
     val dowloadConfig = config.getJsonObject("dowload")
+    val keyword = config.getJsonArray("keyword")
     vertx.eventBus().consumer<JsonArray>(DowloadImageVerticle::class.java.name) {
       val fileInfoList = it.body()
       val path = dowloadConfig.getString("path")
       launch {
-        for (index in 0 until fileInfoList.size()){
+        for (index in 0 until fileInfoList.size()) {
           val fileInfo = fileInfoList.getJsonObject(index)
           val url = fileInfo.getString("url")
           val title = fileInfo.getString("title")
           val filename = fileInfo.getString("filename")
-          val dir = path+title
-          val file = "$dir/$filename"
+          val date = LocalDate.now().format(DateTimeFormatter.ofPattern("yyyy-MM-dd"))
+
+          var filePath = "$path/$date/"
+          keyword.forEach {
+            if (title.contains((it.toString()))) {
+              filePath = "$filePath/$it"
+            }
+          }
+          val dirName = "$filePath/$title"
           val fileSystem = vertx.fileSystem()
-          if (!fileSystem.existsAwait(dir))fileSystem.mkdirsAwait(dir)
-          fileDowload(url,file)
+          if (!fileSystem.existsAwait(dirName)) {
+            fileSystem.mkdirsAwait(dirName)
+          }
+          fileDowload(url, "$dirName/$filename")
         }
       }
     }
@@ -52,7 +64,7 @@ class DowloadImageVerticle : CoroutineVerticle() {
     val buffer = webClient.getAbs(url).sendAwait().bodyAsBuffer()
     val fileSystem = vertx.fileSystem()
     fileSystem.createFileAwait(path)
-    fileSystem.writeFileAwait(path,buffer)
+    fileSystem.writeFileAwait(path, buffer)
     println("$url dowload over......")
   }
 }
